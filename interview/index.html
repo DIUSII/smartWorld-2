@@ -4,12 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        .interview{
+            max-width: 400px;
+            margin: 0 auto;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .interview__title{
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 25px;
+            margin-bottom: 30px;
+        }
+        .interview__input{
+            max-width: 400px;
+            width: 100%;
+            display: block;
+            margin: 8px 0 15px;
+            padding: 8px 0 8px 20px;
+            border: 1px solid grey;
+            border-radius: 5px;
+        }
+        .interview__input-file{
+            max-width: 400px;
+            width: 100%;
+            display: block;
+            margin: 8px 0 15px;
+        }
+        .interview__text{
+            margin: 0;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .interview__checkbox{
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .interview__label{
+            font-size: 15px;
+        }
+        .interview__techono-box{
+            display: block;
+        }
+        .interview__check-block{
+            margin-bottom: 10px;
+            margin-right: 8px;
+            display: inline-block;
+        }
+        .interview__button-group{
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .interview__button{
+            margin-right: 10px;
+            padding: 8px 30px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            background-color: transparent;
+        }
+        .interview__link{
+            font-size: 12px;
+            vertical-align: middle;
+        }
+        .interview__input-references{
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
     <script src="jquery-3.4.1.min.js"></script>
     <script src="jquery.maskedinput.min.js"></script>
     <script>
         let body = document.querySelector('body');
+
+        let block = document.createElement('main');
+        block.className = "interview"
+        body.appendChild(block);
         var xhr = new XMLHttpRequest();
     
         xhr.open('GET', 'interview.json', false);
@@ -19,18 +93,22 @@
         let interview = JSON.parse(xhr.responseText);
         
         let title = document.createElement('h1');
+        title.className = "interview__title";
 
         title.textContent = interview.name;
 
-        body.appendChild(title);
+        block.appendChild(title);
         
         let fields = interview.fields;
 
         for (let i = 0; i < fields.length; i++){
             let label = document.createElement('label');
             let input = document.createElement('input');
-
-            label.textContent = fields[i].label;
+            label.className = "interview__label";
+            input.className = "interview__input";
+            // label.textContent = fields[i].label;
+            let subTitle = document.createElement('p');
+            subTitle.textContent = fields[i].label;
 
             input.type = fields[i].input.type;
 
@@ -42,16 +120,26 @@
                 });
             }
             if ("technologies" in fields[i].input){
+                let techonoBox =  document.createElement('div');
+                techonoBox.className = "interview__techono-box";
+                block.appendChild(techonoBox);
+                label.appendChild(subTitle);
                 for(let k = 0; k < fields[i].input.technologies.length; k++){
+                    let checkblock = document.createElement('div');
+                checkblock.className = "interview__check-block";
+                techonoBox.appendChild(checkblock);
                     let text = document.createElement('p');
                     let checkbox = document.createElement('input');
+                    text.className = "interview__text";
+                    checkbox.className = "interview__checkbox";
 
                     checkbox.type = "checkbox"
                     text.textContent = fields[i].input.technologies[k];
 
-                    body.appendChild(label);
-                    label.appendChild(text);
-                    label.appendChild(checkbox);
+                    techonoBox.appendChild(label);
+                    label.appendChild(checkblock);
+                    checkblock.appendChild(text);
+                    checkblock.appendChild(checkbox);
                 }    
             }
             input.required = fields[i].input.required;
@@ -60,42 +148,53 @@
             }
             input.filetype = fields[i].input.filetype;
             if ("technologies" in fields[i].input){
-            } else {
-                body.appendChild(label);
+            } else if(fields[i].input.type == "file"){
+                input.className = "interview__input-file";
+                block.appendChild(label);
+                label.appendChild(subTitle);
+                label.appendChild(input);
+            }else{
+                block.appendChild(label);
+                label.appendChild(subTitle);
                 label.appendChild(input);
             }
         }
         let references = interview.references;
 
         let inputReferences = document.createElement('input');
-        let textWithoutRef = document.createElement('p');
-        
+        let textWithoutRef = document.createElement('a');
+
+        textWithoutRef.className = "interview__link";
+        inputReferences.className = "interview__input-references"
+
         let Rinput = references[0].input;
 
         inputReferences.type = Rinput.type;
         inputReferences.required = Rinput.required;
         inputReferences.checked = Rinput.checked;
 
-        textWithoutRef.textContent = references[1]["text without ref"];
+        textWithoutRef.textContent = references[1]["text without ref"] + ' ';
 
-        body.appendChild(inputReferences);
-        body.appendChild(textWithoutRef);
+        block.appendChild(inputReferences);
+        block.appendChild(textWithoutRef);
         
         let link = document.createElement('a');
-
+        link.className = "interview__link";
         link.textContent = references[1].text;
         link.href = references[1].ref;
         
-        body.appendChild(link);
+        block.appendChild(link);
 
         let buttons = interview.buttons;
-
+        let groupButton = document.createElement('div');
+        groupButton.className = "interview__button-group";
+        block.appendChild(groupButton);
         for(let j = 0; j < buttons.length; j++){
             let button = document.createElement('button');
-
+            button.className = "interview__button";
             button.textContent = buttons[j].text;
             
-            body.appendChild(button);
+            groupButton.appendChild(button);
         }
     </script>
 </body>
