@@ -5,7 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        .colorsheme{
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .colorsheme__title{
+            text-transform: uppercase;
+            font-size: 25px;
+            margin-bottom: 30px;
+        }
+        .colorsheme__label{
+            color: grey;
+            font-size: 15px;
+        }
+        .colorsheme__group-input{
+            display: block;
+            margin: 30px 0;
+        }
+        .colorsheme__label-checkbox{
+            color: grey;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
@@ -25,6 +49,8 @@
         let colorsheme = JSON.parse(xhr.responseText);
         let title = document.createElement('h1');
 
+        title.className = "colorsheme__title"
+
         title.textContent = colorsheme.name;
 
         block.appendChild(title);
@@ -33,18 +59,26 @@
         let colors = fields[0].input.colors;
 
         let label = document.createElement('label');
+        
+        label.className = "colorsheme__label"
 
         label.textContent = fields[0].label;
 
         block.appendChild(label);
+
+        let inputGroup = document.createElement('div');
+
+        inputGroup.className = "colorsheme__group-input";
+
+        label.appendChild(inputGroup);
 
         for(let i = 0; i < colors.length; i++){
             let input = document.createElement('input');
 
             input.type = fields[0].input.type;
             input.value = fields[0].input.colors[i];
-
-            label.appendChild(input);
+            
+            inputGroup.appendChild(input);
         }
         
         let checkbox = document.createElement('input');
@@ -54,6 +88,8 @@
         block.appendChild(checkbox);
 
         let labelCheckbox = document.createElement('label');
+
+        labelCheckbox.className = "colorsheme__label-checkbox";
 
         labelCheckbox.textContent = fields[1].label;
 
