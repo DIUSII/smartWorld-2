@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let body = document.querySelector('body');
+        var xhr = new XMLHttpRequest();
+    
+        xhr.open('GET', 'addpost.json', false);
+    
+        xhr.send();
+        
+        let addpost = JSON.parse(xhr.responseText);
+        let title = document.createElement('h1');
+        
+        title.textContent = addpost.name;
+
+        body.appendChild(title);
+        let fields = addpost.fields;
+
+        for (let i = 0; i < fields.length; i++){
+            let label = document.createElement('label');
+            let input = document.createElement('input');
+
+            label.textContent = fields[i].label;
+
+            let fInput = fields[i].input
+
+            input.type = fInput.type;
+            input.required = fInput.required;
+
+            body.appendChild(label);
+            label.appendChild(input);
+        }
+        let references = addpost.references;
+
+        let inputReferences = document.createElement('input');
+        let textWithoutRef = document.createElement('p');
+        
+        let Rinput = references[0].input;
+
+        inputReferences.type = Rinput.type;
+        inputReferences.required = Rinput.required;
+        inputReferences.checked = Rinput.checked;
+
+        textWithoutRef.textContent = references[1]["text without ref"];
+
+        body.appendChild(textWithoutRef);
+        body.appendChild(inputReferences);
+        
+        let link = document.createElement('a');
+
+        link.textContent = references[1].text;
+        link.href = references[1].ref;
+        
+        body.appendChild(link);
+
+        let buttons = addpost.buttons;
+
+        let button = document.createElement('button');
+
+        button.textContent = buttons[0].text;
+
+        body.appendChild(button);
+    </script>
+</body>
+</html>

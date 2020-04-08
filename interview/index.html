@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="jquery.maskedinput.min.js"></script>
+    <script>
+        let body = document.querySelector('body');
+        var xhr = new XMLHttpRequest();
+    
+        xhr.open('GET', 'interview.json', false);
+    
+        xhr.send();
+        
+        let interview = JSON.parse(xhr.responseText);
+        
+        let title = document.createElement('h1');
+
+        title.textContent = interview.name;
+
+        body.appendChild(title);
+        
+        let fields = interview.fields;
+
+        for (let i = 0; i < fields.length; i++){
+            let label = document.createElement('label');
+            let input = document.createElement('input');
+
+            label.textContent = fields[i].label;
+
+            input.type = fields[i].input.type;
+
+            if (input.type == "number"){
+                input.type = "text";
+                input.id = fields[i].input.type + `${i}`;
+                $(function(){
+                    $("#number"+ `${i}`).mask(fields[i].input.mask);
+                });
+            }
+            if ("technologies" in fields[i].input){
+                for(let k = 0; k < fields[i].input.technologies.length; k++){
+                    let text = document.createElement('p');
+                    let checkbox = document.createElement('input');
+
+                    checkbox.type = "checkbox"
+                    text.textContent = fields[i].input.technologies[k];
+
+                    body.appendChild(label);
+                    label.appendChild(text);
+                    label.appendChild(checkbox);
+                }    
+            }
+            input.required = fields[i].input.required;
+            if ((input.placeholder = fields[i].input.placeholder) == undefined){
+                input.placeholder = "";
+            }
+            input.filetype = fields[i].input.filetype;
+            if ("technologies" in fields[i].input){
+            } else {
+                body.appendChild(label);
+                label.appendChild(input);
+            }
+        }
+        let references = interview.references;
+
+        let inputReferences = document.createElement('input');
+        let textWithoutRef = document.createElement('p');
+        
+        let Rinput = references[0].input;
+
+        inputReferences.type = Rinput.type;
+        inputReferences.required = Rinput.required;
+        inputReferences.checked = Rinput.checked;
+
+        textWithoutRef.textContent = references[1]["text without ref"];
+
+        body.appendChild(inputReferences);
+        body.appendChild(textWithoutRef);
+        
+        let link = document.createElement('a');
+
+        link.textContent = references[1].text;
+        link.href = references[1].ref;
+        
+        body.appendChild(link);
+
+        let buttons = interview.buttons;
+
+        for(let j = 0; j < buttons.length; j++){
+            let button = document.createElement('button');
+
+            button.textContent = buttons[j].text;
+            
+            body.appendChild(button);
+        }
+    </script>
+</body>
+</html>

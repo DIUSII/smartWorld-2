@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let body = document.querySelector('body');
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('GET', 'signup.json', false);
+
+        xhr.send();
+        
+        let signup = JSON.parse(xhr.responseText);
+        let title = document.createElement('h1');
+
+        title.textContent = signup.name;
+
+        body.appendChild(title);
+
+        let fields = signup.fields
+
+        for(let i = 0; i < fields.length; i++){
+
+            let input = document.createElement('input')
+
+            input.placeholder = fields[i].input.placeholder;
+            input.type = fields[i].input.type;
+            input.required = fields[i].input.required;
+
+            body.appendChild(input);
+        }
+        let references = signup.references;
+
+        let text = document.createElement("a");
+
+        text.textContent = references[0]["text without ref"];
+        text.href = '#';
+
+        body.appendChild(text);
+
+        let link = document.createElement('a');
+
+        link.textContent = references[0].text;
+        link.href = '#' + references[0].ref;
+
+        body.appendChild(link);
+
+        let buttons = signup.buttons;
+
+        let textButton = document.createElement('button');
+
+        textButton.textContent = buttons[0].text;
+
+        body.appendChild(textButton);
+
+
+        
+    </script>
+</body>
+</html>

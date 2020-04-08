@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let body = document.querySelector('body');
+        var xhr = new XMLHttpRequest();
+    
+        xhr.open('GET', 'colorsheme.json', false);
+    
+        xhr.send();
+        
+        let colorsheme = JSON.parse(xhr.responseText);
+        let title = document.createElement('h1');
+
+        title.textContent = colorsheme.name;
+
+        body.appendChild(title);
+
+        let fields = colorsheme.fields;
+        let colors = fields[0].input.colors;
+
+        let label = document.createElement('label');
+
+        label.textContent = fields[0].label;
+
+        body.appendChild(label);
+
+        for(let i = 0; i < colors.length; i++){
+            let input = document.createElement('input');
+
+            input.type = fields[0].input.type;
+            input.value = fields[0].input.colors[i];
+
+            label.appendChild(input);
+        }
+        
+        let checkbox = document.createElement('input');
+
+        checkbox.type = fields[1].input.type;
+        
+        body.appendChild(checkbox);
+
+        let labelCheckbox = document.createElement('label');
+
+        labelCheckbox.textContent = fields[1].label;
+
+        labelCheckbox.htmlFor = "#checkbox";
+        checkbox.id = labelCheckbox.htmlFor;
+
+        body.appendChild(labelCheckbox);
+    </script>
+</body>
+</html>

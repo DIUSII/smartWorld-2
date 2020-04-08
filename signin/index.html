@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let body = document.querySelector('body');
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('GET', 'signin.json', false);
+
+        xhr.send();
+        
+        let signin = JSON.parse(xhr.responseText)
+        let title = document.createElement('h1'); 
+
+        title.textContent = signin.name;
+        body.appendChild(title);
+
+        let fields = signin.fields
+
+        for (let i = 0; i < fields.length; i++) {
+            let label = document.createElement('label');
+            let input = document.createElement('input');
+
+            label.textContent = fields[i].label;
+
+            input.placeholder = fields[i].input.placeholder;
+            input.type = fields[i].input.type;
+            input.required = fields[i].input.required;
+
+            body.appendChild(label);
+            label.appendChild(input);
+        }
+        let references = signin.references;
+
+        for (let i = 0; i < references.length; i++){
+            let link = document.createElement('a');
+
+            link.textContent = references[i].text;
+            link.href = '#' + references[i].ref;
+
+            body.appendChild(link);
+        }
+
+        let buttons = document.createElement('button');
+
+        buttons.textContent = signin.buttons[0].text;
+
+        body.appendChild(buttons);
+    </script>
+</body>
+</html>
