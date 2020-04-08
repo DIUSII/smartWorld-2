@@ -27,10 +27,10 @@
             padding: 12px 0 12px 30px;
             max-width: 250px;
             width: 100%;
-            border-radius: 12px;
+            border-radius: 15px;
             color: grey;
             border: 1px solid grey;
-            font-size: 15px;
+            font-size: 12px;
             display: block;
             outline: none;
         }
@@ -48,6 +48,14 @@
             background-color: transparent;
             border-radius: 15px;
             margin: 30px auto 0 ;
+            outline: none;
+        }
+        .signin__group-link{
+            margin: 0 auto;
+            max-width: 220px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -94,6 +102,12 @@
         }
         let references = signin.references;
 
+        let linkGroup = document.createElement('div');
+
+        linkGroup.className = "signin__group-link"
+
+        block.appendChild(linkGroup);
+
         for (let i = 0; i < references.length; i++){
             let link = document.createElement('a');
 
@@ -102,7 +116,7 @@
             link.textContent = references[i].text;
             link.href = '#' + references[i].ref;
 
-            block.appendChild(link);
+            linkGroup.appendChild(link);
         }
 
         let buttons = document.createElement('button');
