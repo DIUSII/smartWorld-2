@@ -4,10 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        .addPost{
+            /* text-align: center; */
+            font-family: arial, sans-serif;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .addPost__title{
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 25px;
+            margin-bottom: 30px;
+        }
+        .addPost__label{
+            color: rgb(68, 68, 68);
+            font-size: 14px;
+            display: block;
+        }
+        .addPost__input0, .addPost__input3, .addPost__input4{
+            display: block;
+            border: 1px solid gray;
+            border-radius: 5px;
+            padding: 5px 0 5px 10px;
+            max-width: 200px;
+            width: 100%;
+            outline: none;
+            margin-top: 10px;
+        }
+        .addPost__textarea{
+            outline: none;
+            display: block;
+            width: 500px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .addPost__input2{
+            display: block;
+            margin-top: 10px;
+        }
+        .addPost__input3{
+            color: rgb(68, 68, 68); 
+        }
+        .addPost__group-input{
+            margin-bottom: 20px;
+        }
+        .addPost__form{
+            margin-right: 30px;
+            display: inline-block;
+        }
+        .addPost__button{
+            display: block;
+            margin-top: 20px;
+            padding: 8px 30px;
+            border: 1px solid gray;
+            background-color: transparent;
+            border-radius: 5px;
+        }
+        .addPost__link{
+            margin-left: 10px;
+            font-size: 12px;
+            color:rgb(68, 68, 68);
+            text-decoration: none;
+        }
+        .addPost__checkbox{
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
     <script>
         let body = document.querySelector('body');
+        let block = document.createElement('main');
+
+        block.className = "addPost";
+
+        body.appendChild(block);
         var xhr = new XMLHttpRequest();
     
         xhr.open('GET', 'addpost.json', false);
@@ -17,55 +95,86 @@
         let addpost = JSON.parse(xhr.responseText);
         let title = document.createElement('h1');
         
+        title.className = "addPost__title";
         title.textContent = addpost.name;
 
-        body.appendChild(title);
+        block.appendChild(title);
         let fields = addpost.fields;
-
+        let groupInput = document.createElement('div');
+        groupInput.className = "addPost__group-input";
+        block.appendChild(groupInput);
         for (let i = 0; i < fields.length; i++){
             let label = document.createElement('label');
             let input = document.createElement('input');
+
+            label.className = "addPost__label";
+            input.className = "addPost__input" + `${i}`;
+
 
             label.textContent = fields[i].label;
 
             let fInput = fields[i].input
 
             input.type = fInput.type;
-            input.required = fInput.required;
+            input.required = fInput.required;   
+            if(i == 0 || i == 3 || i == 4){
+                let form = document.createElement('div');
 
-            body.appendChild(label);
-            label.appendChild(input);
+                form.className = "addPost__form";
+
+                groupInput.appendChild(form);
+                form.appendChild(label);
+                label.appendChild(input);
+            }else if(i == 1){
+                let textarea = document.createElement("textarea");
+                textarea.className = "addPost__textarea";
+                textarea.rows = "15";
+                block.appendChild(textarea);
+            } else{
+                block.appendChild(label);
+                label.appendChild(input);
+            }
         }
         let references = addpost.references;
 
+        let blockCheckbox = document.createElement('div');
+
+        blockCheckbox.className = "addPost__checkbox";
+
+        block.appendChild(blockCheckbox);
+
         let inputReferences = document.createElement('input');
-        let textWithoutRef = document.createElement('p');
+        // let textWithoutRef = document.createElement('a');
         
         let Rinput = references[0].input;
 
         inputReferences.type = Rinput.type;
         inputReferences.required = Rinput.required;
-        inputReferences.checked = Rinput.checked;
+        // inputReferences.checked = Rinput.checked;
 
-        textWithoutRef.textContent = references[1]["text without ref"];
+        // textWithoutRef.textContent = references[1]["text without ref"];
 
-        body.appendChild(textWithoutRef);
-        body.appendChild(inputReferences);
+        blockCheckbox.appendChild(inputReferences);
+        // block.appendChild(textWithoutRef);
         
         let link = document.createElement('a');
 
+        link.className = "addPost__link";
+;
         link.textContent = references[1].text;
         link.href = references[1].ref;
         
-        body.appendChild(link);
+        blockCheckbox.appendChild(link);
 
         let buttons = addpost.buttons;
 
         let button = document.createElement('button');
 
+        button.className = "addPost__button";
+
         button.textContent = buttons[0].text;
 
-        body.appendChild(button);
+        block.appendChild(button);
     </script>
 </body>
 </html>
