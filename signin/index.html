@@ -63,23 +63,18 @@
     <script>
         let body = document.querySelector('body');
         let block = document.createElement('main');
-        
         block.className = "signin";
-
         body.appendChild(block);
 
-        var xhr = new XMLHttpRequest();
-
+        let xhr = new XMLHttpRequest();
         xhr.open('GET', 'signin.json', false);
-
         xhr.send();
         
         let signin = JSON.parse(xhr.responseText)
+
         let title = document.createElement('h1'); 
-
         title.textContent = signin.name;
-        title.className = "singin__title"
-
+        title.className = "singin__title";
         block.appendChild(title);
 
         let fields = signin.fields
@@ -87,42 +82,32 @@
         for (let i = 0; i < fields.length; i++) {
             let label = document.createElement('label');
             let input = document.createElement('input');
-
             label.className = "signin__label"
             input.className = "signin__input"
-
             label.textContent = fields[i].label;
-
             input.placeholder = fields[i].input.placeholder;
             input.type = fields[i].input.type;
             input.required = fields[i].input.required;
-
             block.appendChild(label);
             label.appendChild(input);
         }
         let references = signin.references;
-
         let linkGroup = document.createElement('div');
-
         linkGroup.className = "signin__group-link"
-
         block.appendChild(linkGroup);
 
         for (let i = 0; i < references.length; i++){
             let link = document.createElement('a');
-
             link.className = "signin__link";
-
             link.textContent = references[i].text;
             link.href = '#' + references[i].ref;
-
             linkGroup.appendChild(link);
+
         }
 
         let buttons = document.createElement('button');
         buttons.className = "signin__button";
         buttons.textContent = signin.buttons[0].text;
-
         block.appendChild(buttons);
     </script>
 </body>

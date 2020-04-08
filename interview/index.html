@@ -80,36 +80,30 @@
     <script src="jquery.maskedinput.min.js"></script>
     <script>
         let body = document.querySelector('body');
-
         let block = document.createElement('main');
         block.className = "interview"
         body.appendChild(block);
+
         var xhr = new XMLHttpRequest();
-    
         xhr.open('GET', 'interview.json', false);
-    
         xhr.send();
         
         let interview = JSON.parse(xhr.responseText);
         
         let title = document.createElement('h1');
         title.className = "interview__title";
-
         title.textContent = interview.name;
-
         block.appendChild(title);
         
         let fields = interview.fields;
-
         for (let i = 0; i < fields.length; i++){
             let label = document.createElement('label');
             let input = document.createElement('input');
             label.className = "interview__label";
             input.className = "interview__input";
-            // label.textContent = fields[i].label;
+
             let subTitle = document.createElement('p');
             subTitle.textContent = fields[i].label;
-
             input.type = fields[i].input.type;
 
             if (input.type == "number"){
@@ -124,28 +118,32 @@
                 techonoBox.className = "interview__techono-box";
                 block.appendChild(techonoBox);
                 label.appendChild(subTitle);
+
                 for(let k = 0; k < fields[i].input.technologies.length; k++){
                     let checkblock = document.createElement('div');
-                checkblock.className = "interview__check-block";
-                techonoBox.appendChild(checkblock);
+                    checkblock.className = "interview__check-block";
+                    techonoBox.appendChild(checkblock);
+
                     let text = document.createElement('p');
                     let checkbox = document.createElement('input');
                     text.className = "interview__text";
                     checkbox.className = "interview__checkbox";
-
                     checkbox.type = "checkbox"
                     text.textContent = fields[i].input.technologies[k];
-
                     techonoBox.appendChild(label);
                     label.appendChild(checkblock);
                     checkblock.appendChild(text);
                     checkblock.appendChild(checkbox);
+
                 }    
             }
+
             input.required = fields[i].input.required;
             if ((input.placeholder = fields[i].input.placeholder) == undefined){
                 input.placeholder = "";
+
             }
+
             input.filetype = fields[i].input.filetype;
             if ("technologies" in fields[i].input){
             } else if(fields[i].input.type == "file"){
@@ -153,28 +151,25 @@
                 block.appendChild(label);
                 label.appendChild(subTitle);
                 label.appendChild(input);
+
             }else{
                 block.appendChild(label);
                 label.appendChild(subTitle);
                 label.appendChild(input);
+
             }
         }
         let references = interview.references;
-
         let inputReferences = document.createElement('input');
         let textWithoutRef = document.createElement('a');
-
         textWithoutRef.className = "interview__link";
         inputReferences.className = "interview__input-references"
 
         let Rinput = references[0].input;
-
         inputReferences.type = Rinput.type;
         inputReferences.required = Rinput.required;
         inputReferences.checked = Rinput.checked;
-
         textWithoutRef.textContent = references[1]["text without ref"] + ' ';
-
         block.appendChild(inputReferences);
         block.appendChild(textWithoutRef);
         
@@ -182,7 +177,6 @@
         link.className = "interview__link";
         link.textContent = references[1].text;
         link.href = references[1].ref;
-        
         block.appendChild(link);
 
         let buttons = interview.buttons;
@@ -193,8 +187,8 @@
             let button = document.createElement('button');
             button.className = "interview__button";
             button.textContent = buttons[j].text;
-            
             groupButton.appendChild(button);
+
         }
     </script>
 </body>
