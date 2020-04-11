@@ -1,0 +1,11 @@
+.main__title{
+    text-align: center;
+}
+.main__label{
+    text-align: center;
+    display: block;
+}
+.main__input{
+    margin: 0 auto;
+    display: block;
+}
