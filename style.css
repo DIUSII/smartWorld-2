@@ -1,11 +1,90 @@
-.main__title{
-    text-align: center;
+body{
+    margin:0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: gray;
 }
 .main__label{
     text-align: center;
     display: block;
+    margin: 10px;
 }
 .main__input{
-    margin: 0 auto;
+    outline: none;
+    margin: 20px auto;
     display: block;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 8px 0 8px 20px;
+    max-width: 230px;
+    width: 100%;
+}
+.main__input-file, .main__colors-input{
+    display: block;
+    margin: 20px auto;
+}
+.main__colors-input{
+    width: 200px;
+}
+.main__link{
+    text-decoration: none;
+    font-size: 12px;
+    color: gray;
+    vertical-align: middle;
+}
+.main__group-link{
+    text-align: center;
+    margin: 10px 0;
+}
+.main__group-button{
+    text-align: center;
+    margin-bottom: 30px;
+}
+.main__button{
+    padding: 8px 30px;
+}
+.main__button:nth-child(2){
+    margin-left: 30px;
+}
+.main__checkbo-in-referense{
+    vertical-align: middle;
+}
+.main__text{
+    font-size: 12px;
+    color: gray;
+    display: inline-block;
+    margin-right: 60px;
+    vertical-align: middle;
+}
+.main__text-without-margin{
+    font-size: 12px;
+    color: gray;
+    display: inline-block;
+    margin-right: 2px;
+    vertical-align: middle;
+}
+.main__textarea{
+    max-width: 230px;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+.main__group-techo{
+    margin: 0 auto;
+    max-width: 320px;
+    width: 100%;
+    text-align: center;
+}
+.main__techno{
+    display: inline-block;  
+    margin-right: 10px;
+    margin-bottom: 15px;
+}
+.main__checkbox{
+    display: inline-block;  
+    vertical-align: middle;
+}
+.main__checkbox-text{
+    vertical-align: middle;
+    display: inline-block; 
 }

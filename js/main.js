@@ -9,27 +9,25 @@ let refJson = [
 ];
 
 let body = document.querySelector('body');
-let i = 3;
+let i = 2;
 var xhr = new XMLHttpRequest();
 xhr.open('GET', refJson[i], false);
 xhr.send(); 
 let fileJson = JSON.parse(xhr.responseText);
 
-let linkRefJson = 0;
-for(let q = 0; q<refJson.length; q++){
-    linkRefJson = document.createElement('button');
-    linkRefJson.textContent = refJson[q].slice(8, -5);
-    body.appendChild(linkRefJson);
-}
-if(document.onclick == linkRefJson){
-    i++;
-}
-
+// let linkRefJson = 0;
+// for(let q = 0; q<refJson.length; q++){
+//     linkRefJson = document.createElement('button');
+//     linkRefJson.textContent = refJson[q].slice(8, -5);
+//     body.appendChild(linkRefJson);
+// }
+// if(document.onclick == linkRefJson){
+//     i++;
+// }
+let name = document.createElement('form');
 function createName(fileJson){
-    let name = document.createElement('h1');
-    name.className ="main" + "__title";
-    let cls ="main" + "__title";
-    name.textContent = fileJson.name;
+    name.className ="main" + "__form";
+    name.action = fileJson.name;
     body.appendChild(name);
 }
 function createFields(fileJson){
@@ -46,9 +44,11 @@ function createLabel(fileJson, j, id){
         label.className ="main" + "__label";
         label.htmlFor = id;
         label.textContent = fileJson.fields[j].label;
-        body.appendChild(label);
+        name.appendChild(label);
     }
 }
+let blockCheckboxText =document.createElement('div');
+blockCheckboxText.className = "main__group-techo";
 function createInput(fileJson, j, id){
     let fileInput = fileJson.fields[j].input;
     let input = document.createElement('input');
@@ -59,24 +59,62 @@ function createInput(fileJson, j, id){
     if(fileInput.hasOwnProperty('required')) {input.required = fileInput.required;}
     if(fileInput.hasOwnProperty('colors')) {createBlockWithColors(fileJson, j);}
     if(fileInput.hasOwnProperty('placeholder')) {input.placeholder = fileInput.placeholder;}
-    if(fileInput.hasOwnProperty('mask')){input.mask = fileInput.mask;}
-    if(fileInput.hasOwnProperty('multiple')){input.multiple = fileInput.multiple;}
-    if(fileInput.hasOwnProperty('filetype')){input.filetype = fileInput.filetype;}
-    if(fileInput.hasOwnProperty('colors') || fileInput.type === "textarea") {}
-    else{
-        body.appendChild(input);
+    if(fileInput.hasOwnProperty('mask')){
+        input.classList ="main__input " + "main__input" + `${j}`;
+        input.type = 'text';
+        jQuery(function($){
+            $(".main__input" + `${j}`).mask(fileInput.mask);    
+         });
     }
-
+    if(fileInput.hasOwnProperty('multiple')){input.multiple = fileInput.multiple;}
+    if(fileInput.hasOwnProperty('filetype')){
+        input.accept = 'image/' + fileInput.filetype[0] + ',' + 'image/' + fileInput.filetype[1] + ',' + 'image/' + fileInput.filetype[2];   
+    }
+    if(fileInput.hasOwnProperty('technologies')){
+        name.appendChild(blockCheckboxText);
+        for(let k = 0; k < fileInput.technologies.length; k++) {
+            createTechno(fileJson, j, k);
+        }
+    }
+    if(fileInput.type == "file"){
+        input.className = "main__input-file";
+    }
+    if(fileInput.hasOwnProperty('colors') || fileInput.type === "textarea" ) {}
+    else{
+        name.appendChild(input);
+    }
 }
 function createBlockWithColors(fileJson, j){
+    let inputColors = document.createElement('input');
     let fileInput = fileJson.fields[j].input;
+    let datalist = document.createElement('datalist');
+    inputColors.setAttribute('list', "colors");
+    datalist.id = "colors";
     for (let k = 0; k < fileInput.colors.length; k ++){
-        let inputColors = document.createElement('input');
+        let option = document.createElement('option');
+        option.value = fileInput.colors[k];
         inputColors.className ="main" + "__colors-input";
         inputColors.type = fileInput.type;
-        inputColors.value = fileInput.colors[k];
-        body.appendChild(inputColors);
+        inputColors.value = fileInput.colors[0];
+        datalist.appendChild(option);
     }
+    name.appendChild(inputColors);
+    name.appendChild(datalist);
+}
+function createTechno(fileJson, j, k){
+    let fileInput = fileJson.fields[j].input;
+    let block = document.createElement('div');
+    let text = document.createElement('p');
+    let checkbox = document.createElement('input');
+    block.className = "main__techno";
+    checkbox.type = "checkbox";
+    checkbox.className = "main__checkbox";
+    text.textContent = fileInput.technologies[k];
+    text.className = "main__checkbox-text";
+    // name.appendChild(blockCheckboxText);
+    blockCheckboxText.appendChild(block);
+    block.appendChild(checkbox);
+    block.appendChild(text);
 }
 function createTextarea(fileJson, j, id){
     let fileInput = fileJson.fields[j].input;
@@ -85,9 +123,11 @@ function createTextarea(fileJson, j, id){
         textarea.className ="main" + "__textarea";
         textarea.rows = '7';
         textarea.id = id;
-        body.appendChild(textarea);
+        name.appendChild(textarea);
     }
 }
+let blockLink = document.createElement('div');
+blockLink.className = "main__group-link";
 function createReference(fileJson){
     let references = fileJson.references;
     for(let j = 0; j < references.length; j++){
@@ -102,33 +142,43 @@ function createReference(fileJson){
         }
         
     }
+    name.appendChild(blockLink);
     
 }
 function createLink(fileJson ,j){
-    let link = document.createElement('a');
-    link.className ="main" + "__link";
-    if(fileJson.references[j].hasOwnProperty('text without ref')){
-        let textWithoutRef = document.createElement('p');
-        textWithoutRef.className ="main" + "__text";
-        textWithoutRef.textContent = fileJson.references[j]["text without ref"];
-        body.appendChild(textWithoutRef);
+    if(true){
+        let link = document.createElement('a');
+        link.className ="main" + "__link";
+        if(fileJson.references[j].hasOwnProperty('text without ref')){
+            let textWithoutRef = document.createElement('p');
+            textWithoutRef.className ="main" + "__text";
+            if(i = 2){
+                textWithoutRef.className ="main" + "__text-without-margin";
+            }
+            textWithoutRef.textContent = fileJson.references[j]["text without ref"];
+            blockLink.appendChild(textWithoutRef);
+        }
+        link.href ="#" + fileJson.references[j].ref;
+        link.textContent =  fileJson.references[j].text;
+        blockLink.appendChild(link);
     }
-    link.href ="#" + fileJson.references[j].ref;
-    link.textContent =  fileJson.references[j].text;
-    body.appendChild(link);
-
 }
 function createInputReference(fileJson, j){
     let inputW = document.createElement("input");
+    inputW.className = "main__checkbo-in-referense";
     inputW.type = fileJson.references[j].input.type;
     inputW.required = fileJson.references[j].input.required;
-    body.appendChild(inputW);
+    blockLink.appendChild(inputW);
 }
 function createButton(fileJson){
+    let groupBtn = document.createElement('div');
+    groupBtn.className ="main" + "__group-button";
+    name.appendChild(groupBtn);
     for(let d = 0; d < fileJson.buttons.length; d++){
         let btn = document.createElement('button'); 
+        btn.className ="main" + "__button";
         btn.textContent = fileJson.buttons[d].text;
-        body.appendChild(btn);
+        groupBtn.appendChild(btn);
     }
 }
 if(i == 3){
